@@ -35,12 +35,12 @@ class MLP:
             hidden1 = tf.nn.tanh(tf.matmul(x, w0) + b0)
 
         with tf.name_scope('hidden2'):
-            w1 = tf.Variable(tf.truncated_normal([10, 3]), name="w1")  # weight
-            b1 = tf.Variable(tf.zeros([3]), name="b1")  # bias
+            w1 = tf.Variable(tf.truncated_normal([10, 20]), name="w1")  # weight
+            b1 = tf.Variable(tf.zeros([20]), name="b1")  # bias
             hidden2 = tf.nn.tanh(tf.matmul(hidden1, w1) + b1)
 
         with tf.name_scope('output'):
-            wo = tf.Variable(tf.zeros([10, 3]), name="wo")
+            wo = tf.Variable(tf.zeros([20, 3]), name="wo")
             bo = tf.Variable(tf.zeros([3]), name = "bo")
             p = tf.matmul(hidden1, wo) + bo
 

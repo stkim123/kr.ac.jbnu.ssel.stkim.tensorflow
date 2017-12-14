@@ -37,13 +37,6 @@ class MultiLinearRegression:
 
         with tf.name_scope('optimizer'):
             t = tf.placeholder(tf.float32, [None, 1], name='t')
-            # loss = tf.reduce_mean(tf.reduce_sum(tf.square(p - t)))
-
-            total_error = tf.reduce_sum(tf.square(t - tf.reduce_mean(t)))
-            unexplained_error = tf.reduce_sum(tf.square(t- p))
-            R_squared = tf.subtract(1., tf.div(total_error, unexplained_error))
-
-            # loss = tf.reduce_mean(tf.reduce_sum(tf.square(t - p)))
             loss = tf.reduce_sum(tf.square(t - p))
             train_step = tf.train.AdamOptimizer().minimize(loss)
 
@@ -67,7 +60,6 @@ class MultiLinearRegression:
         self.train_step = train_step
         self.loss = loss
         self.accuracy = accuracy
-        self.R_squared = R_squared
 
     def prepare_session(self):
         sess = tf.InteractiveSession()
@@ -91,7 +83,7 @@ class MultiLinearRegression:
             #     = self.sess.run([self.x, self.wo, self.bo, self.p, self.t], feed_dict={self.x: x_data, self.t: y_data})
             # print("\nx=", x_val, "\np=", p_val, "\nt=", t_val)
             #
-            summary_val, loss_val, R_squared_val, acc_val, p_val = self.sess.run([self.summary, self.loss, self.R_squared, self.accuracy, self.p],
+            summary_val, loss_val, acc_val, p_val = self.sess.run([self.summary, self.loss, self.accuracy, self.p],
                                                      feed_dict={self.x: x_data, self.t: y_data})
             # print('loss: %f' % loss_val)
             # print('Accuracy:  %f' % acc_val)
@@ -107,7 +99,6 @@ class MultiLinearRegression:
         self.accuracy_val = acc_val
         self.wo_val = self.wo.eval(self.sess)
         self.bo_val = self.bo.eval(self.sess)
-        self.R_squared_val = R_squared_val
         self.p_val = p_val
 
     def printMLPStructure(self):
@@ -121,7 +112,6 @@ class MultiLinearRegression:
         print("------------------------------------------")
         print("accuracy:", self.accuracy_val)
         print("loss    :", self.loss_val)
-        print("R_squared_val:", self.R_squared_val)
 
 # End of the class definition
 #================================================================================
